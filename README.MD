@@ -17,7 +17,7 @@ Just unpack the release files in to your directory. You shall see the following 
 
 You must define envirounment variables `DB_NAME`, `DB_USER`, `DB_PASSWORD` (and `DB_ROOT_PASSWORD` if use MySQL) and use the `docker-compose up` command to run containers.
     
-    (*)Notice: the Docker specific variables will only have an effect if you start the container with a data directory that is empty. Any pre-existing database will be left untouched on container startup.
+`(*)Notice: the Docker specific variables will only have an effect if you start the container with a data directory that is empty. Any pre-existing database will be left untouched on container startup.`
 
 REQUIREMENTS
 ------------
