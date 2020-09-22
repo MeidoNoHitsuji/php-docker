@@ -1,0 +1,18 @@
+# example.com
+!/www/example.com/
+!/hosts/example.com.conf
+!/hosts/default.conf
+
+# other projects
+/www/*
+/hosts/*
+
+# logs
+!/logs/.gitkeep
+/logs/*
+
+# db
+!/db/initdb/extension-uuid.sql
+/db/initdb/*
+!/db/data/.gitkeep
+/db/data/*

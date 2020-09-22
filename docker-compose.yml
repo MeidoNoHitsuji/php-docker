@@ -31,7 +31,7 @@ services:
             - 5432:5432
         volumes:
             - ./db/initdb/:/docker-entrypoint-initdb.d/
-#            - ./db/data/:/var/lib/postgresql/data
+            - ./db/data/:/var/lib/postgresql/data
             - ./logs:/var/log/postgresql/
     adminer:
         image: adminer
