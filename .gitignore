@@ -16,3 +16,5 @@
 /db/initdb/*
 !/db/data/.gitkeep
 /db/data/*
+!/db/mysql/.gitkeep
+/db/mysql/*

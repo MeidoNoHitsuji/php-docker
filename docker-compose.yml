@@ -20,19 +20,19 @@ services:
             - ./images/php/php.ini:/usr/local/etc/php/conf.d/php.ini
             - ./images/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
             - ./www:/var/www
-    db:
-        image: postgres
-        restart: always
-        environment:
-            POSTGRES_DB: ${DB_NAME}
-            POSTGRES_USER: ${DB_USER}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
-        ports:
-            - 5432:5432
-        volumes:
-            - ./db/initdb/:/docker-entrypoint-initdb.d/
-            - ./db/data/:/var/lib/postgresql/data
-            - ./logs:/var/log/postgresql/
+#    db:
+#        image: postgres
+#        restart: always
+#        environment:
+#            POSTGRES_DB: ${DB_NAME}
+#            POSTGRES_USER: ${DB_USER}
+#            POSTGRES_PASSWORD: ${DB_PASSWORD}
+#        ports:
+#            - 5432:5432
+#        volumes:
+#            - ./db/initdb/:/docker-entrypoint-initdb.d/
+#            - ./db/data/:/var/lib/postgresql/data
+#            - ./logs:/var/log/postgresql/
     adminer:
         image: adminer
         restart: always
@@ -40,18 +40,18 @@ services:
             - 8080:8080
         depends_on:
             - db
-#    db:
-#        image: mysql
-#        command: --default-authentication-plugin=mysql_native_password
-#        restart: always
-#        environment:
-#            MYSQL_DATABASE: ${DB_NAME}
-#            MYSQL_USER: ${DB_USER}
-#            MYSQL_PASSWORD: ${DB_PASSWORD}
-#            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-#        ports:
-#            - 3306:3306
-#        volumes:
-#            - ./db/initdb/:/docker-entrypoint-initdb.d/
-#            - ./db/data:/var/lib/mysql
-#            - ./logs:/var/log/mysql/
+    db:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        ports:
+            - 3306:3306
+        volumes:
+            - ./db/initdb/:/docker-entrypoint-initdb.d/
+            - ./db/mysql:/var/lib/mysql
+            - ./logs:/var/log/mysql/
