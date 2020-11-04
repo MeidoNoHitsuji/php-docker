@@ -9,31 +9,37 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libonig-dev \
         libpng-dev \
+        libwebp-dev \
         libicu-dev \
         libpq-dev \
         libxpm-dev \
         libvpx-dev \
         libzip-dev \
+        zip \
+        unzip \
     && pecl install xdebug \
     && pecl install mcrypt-1.0.3 \
     && docker-php-ext-enable xdebug \
-    && docker-php-ext-enable mcrypt \
-    && docker-php-ext-install -j$(nproc) iconv \
-    && docker-php-ext-install -j$(nproc) mbstring \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install -j$(nproc) intl \
-    && docker-php-ext-install -j$(nproc) zip \
-    && docker-php-ext-install -j$(nproc) pgsql \
-    && docker-php-ext-install -j$(nproc) mysqli \
-    && docker-php-ext-install -j$(nproc) pdo_pgsql \
-    && docker-php-ext-install -j$(nproc) pdo_mysql \
-    && docker-php-ext-install -j$(nproc) exif \
-    && docker-php-ext-configure gd \
-        --with-freetype=/usr/include/ \
-        --with-jpeg=/usr/include/ \
-        --with-xpm=/usr/lib/x86_64-linux-gnu/ 
+    && docker-php-ext-enable mcrypt 
+
+RUN set -eux; \
+	docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-xpm --with-webp; \
+	docker-php-ext-install -j "$(nproc)" \
+		iconv \
+		mbstring \
+		gd \
+		intl \
+		zip \
+		pgsql \
+		mysqli \
+		pdo_pgsql \
+		pdo_mysql \
+		exif 
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Downgrade composer to v.1
+RUN composer self-update 1.10.17
 
 # Include custom php.ini to manage PHP configuration
 ADD php.ini /usr/local/etc/php/conf.d/40-custom.ini
