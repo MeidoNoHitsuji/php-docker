@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libonig-dev \
         libpng-dev \
+        libwebp-dev \
         libicu-dev \
         libpq-dev \
         libxpm-dev \
