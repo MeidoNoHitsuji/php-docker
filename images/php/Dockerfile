@@ -4,6 +4,8 @@ RUN apt-get update && apt-get install -y \
         curl \
         wget \
         git \
+        unzip \
+        zip \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
@@ -13,6 +15,7 @@ RUN apt-get update && apt-get install -y \
         libicu-dev \
         libpq-dev \
         libxpm-dev \
+        libwebp-dev \
         libvpx-dev \
         libzip-dev \
         zip \
@@ -22,24 +25,24 @@ RUN apt-get update && apt-get install -y \
     && pecl install mcrypt-1.0.3 \
     && docker-php-ext-enable xdebug \
     && docker-php-ext-enable mcrypt 
-
 RUN set -eux; \
-	docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-xpm --with-webp; \
-	docker-php-ext-install -j "$(nproc)" \
-		iconv \
-		mbstring \
-		gd \
-		intl \
-		zip \
-		pgsql \
-		mysqli \
-		pdo_pgsql \
-		pdo_mysql \
-		exif 
+    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-xpm --with-webp; \
+    docker-php-ext-configure intl; \
+    docker-php-ext-configure zip; \
+    docker-php-ext-install -j "$(nproc)" iconv \
+        mbstring \
+        gd \
+        intl \
+        zip \
+        pgsql \
+        mysqli \
+        pdo_pgsql \
+        pdo_mysql \
+        exif  
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Downgrade composer to v.1
+# Downgrade composer to v.1 (for solve some trouble with old project dependencies)
 RUN composer self-update 1.10.17
 
 # Include custom php.ini to manage PHP configuration

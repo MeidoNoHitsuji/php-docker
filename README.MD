@@ -4,7 +4,7 @@ In this repository I tryed to agregate experience of another users for build loc
 
 INSTALLATION
 ------------
-Just unpack the release files in to your directory. You shall see the following files and directories:
+Just clone repository or download and unpack the files in to your directory. You shall see the following files and directories:
 
     hosts/               Nginx configuration files
     images/php/          Dockerfile and php.ini
@@ -24,3 +24,13 @@ REQUIREMENTS
 [Docker](https://docs.docker.com/engine/install/) 
 
 [Docker-compose](https://docs.docker.com/compose/install/)
+
+CREATE PROJECT
+--------------
+For the convenience of deploying projects, I made a simple console script `mp.sh`.
+
+Usage
+```
+./mp.sh https://url.to.your/repository.git [projectname]
+```
+You can use SSH or HTTPS links to your git repository. Optional parameter project name is use for naming directory, .conf file and local domain name. If it is empty then the repository name is used.
