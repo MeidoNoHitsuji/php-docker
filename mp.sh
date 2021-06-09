@@ -57,11 +57,14 @@ echo 'server {
 cd ../
 docker-compose up -d
 docker exec -i -t php-dev-env_web_1 nginx -s reload
+echo " "
+echo 'To add domain to hosts file you must use root privileges:'
 sudo -i << EOF
 echo '
 127.0.0.1 '$projectname'.local' >> /etc/hosts
 EOF
 
+echo " "
 echo 'To access the project enter '$projectname'.local in browser.'
 echo 'Now you must go to create DB and configure project environment.'
 exit
