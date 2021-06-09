@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
         libzip-dev \
         zip \
         unzip \
+        fish \
     && pecl install xdebug \
     && pecl install mcrypt-1.0.3 \
     && docker-php-ext-enable xdebug \
