@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
         libwebp-dev \
         libvpx-dev \
         libzip-dev \
+        fish \
     && pecl install xdebug \
     && pecl install mcrypt-1.0.3 \
     && docker-php-ext-enable xdebug \
@@ -35,6 +36,11 @@ RUN set -eux; \
         pdo_pgsql \
         pdo_mysql \
         exif  
+
+RUN chsh -s /usr/bin/fish
+
+RUN groupadd --gid 1000 user \
+    && useradd --uid 1000 --gid 1000 --shell /usr/bin/fish user
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
