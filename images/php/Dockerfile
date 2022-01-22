@@ -18,11 +18,14 @@ RUN apt update && apt install -y \
         libxpm-dev \
         libwebp-dev \
         libvpx-dev \
+        libyaml-dev \
         libzip-dev \
         fish \
     && pecl install xdebug \
+    && pecl install yaml \
     && pecl install mcrypt-1.0.3 \
     && docker-php-ext-enable xdebug \
+    && docker-php-ext-enable yaml \
     && docker-php-ext-enable mcrypt 
 
 # Configure and install PHP extentions

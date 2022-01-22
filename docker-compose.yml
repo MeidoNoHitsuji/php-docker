@@ -61,3 +61,13 @@ services:
             - ./db/initdb/:/docker-entrypoint-initdb.d/
             - ./db/mysql:/var/lib/mysql
             - ./logs:/var/log/mysql/
+    node:
+        image: node:14.18.3-alpine3.15
+        container_name: node
+        restart: always
+        working_dir: /app
+        stdin_open: true
+        ports:
+            - 3000:3000
+        volumes:
+            - ./frontend/:/app/

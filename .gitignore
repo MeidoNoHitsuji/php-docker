@@ -18,3 +18,10 @@
 /db/data/*
 !/db/mysql/.gitkeep
 /db/mysql/*
+
+# frontend sourses
+/frontend
+
+# ide config
+/.vscode
+/.idea

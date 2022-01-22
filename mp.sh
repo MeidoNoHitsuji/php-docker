@@ -56,7 +56,7 @@ echo 'server {
 
 cd ../
 docker-compose up -d
-docker exec -i -t php-dev-env_web_1 nginx -s reload
+docker exec -i -t php-dev-env_nginx_1 nginx -s reload
 echo " "
 echo 'To add domain to hosts file you must use root privileges:'
 sudo -i << EOF
