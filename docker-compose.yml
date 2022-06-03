@@ -2,6 +2,7 @@ version: '3'
 services:
     nginx:
         image: nginx
+        container_name: nginx
         volumes:
             - ./hosts:/etc/nginx/conf.d
             - ./www:/var/www
@@ -12,32 +13,31 @@ services:
         restart: always
         depends_on:
             - php
-            - postgres
             - mysql
     php:
         build: ./images/php
         restart: always
+        container_name: php
         volumes:
             - ./images/php/php.ini:/usr/local/etc/php/conf.d/php.ini
             - ./images/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
             - ./www:/var/www
-            - ~/.local/share/fish:/home/user/.local/share/fish
-            - ~/.config/fish:/home/user/.config/fish
-            - ~/.git-credentials:/home/user/.git-credentials
-            - ~/.gitconfig:/home/user/.gitconfig
-    postgres:
-        image: postgres
-        restart: always
-        environment:
-            POSTGRES_DB: ${DB_NAME}
-            POSTGRES_USER: ${DB_USER}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
-        ports:
-            - 5432:5432
-        volumes:
-            - ./db/initdb/:/docker-entrypoint-initdb.d/
-            - ./db/data/:/var/lib/postgresql/data
-            - ./logs:/var/log/postgresql/
+            - ~/.local/share/fish:/home/meido/.local/share/fish
+            - ~/.config/fish:/home/meido/.config/fish
+            - ~/.git-credentials:/home/meido/.git-credentials
+    # postgres:
+    #     image: postgres
+    #     restart: always
+    #     environment:
+    #         POSTGRES_DB: ${DB_NAME}
+    #         POSTGRES_USER: ${DB_USER}
+    #         POSTGRES_PASSWORD: ${DB_PASSWORD}
+    #     ports:
+    #         - 5432:5432
+    #     volumes:
+    #         - ./db/initdb/:/docker-entrypoint-initdb.d/
+    #         - ./db/data/:/var/lib/postgresql/data
+    #         - ./logs:/var/log/postgresql/
     adminer:
         image: adminer
         restart: always
@@ -50,16 +50,16 @@ services:
         image: mysql
         command: --default-authentication-plugin=mysql_native_password
         restart: always
+        container_name: mysql
         environment:
-            MYSQL_DATABASE: ${DB_NAME}
-            MYSQL_USER: ${DB_USER}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
-            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: smitup
+            MYSQL_ROOT_PASSWORD: root
         ports:
             - 3306:3306
         volumes:
             - ./db/initdb/:/docker-entrypoint-initdb.d/
             - ./db/mysql:/var/lib/mysql
+            - ./db/dumps:/dumps
             - ./logs:/var/log/mysql/
     node:
         image: node:14.18.3-alpine3.15
@@ -71,3 +71,4 @@ services:
             - 3000:3000
         volumes:
             - ./frontend/:/app/
+        command: sh -c "yarn install && yarn run serve"
