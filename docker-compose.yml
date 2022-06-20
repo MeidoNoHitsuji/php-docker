@@ -44,7 +44,6 @@ services:
         ports:
             - 8080:8080
         depends_on:
-            - postgres
             - mysql
     mysql:
         image: mysql
@@ -72,3 +71,24 @@ services:
         volumes:
             - ./frontend/:/app/
         command: sh -c "yarn install && yarn run serve"
+    redis:
+        image: redis
+        container_name: redis
+        restart: always
+        ports:
+            - 6379:6379
+        command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
+    echo-server:
+        image: oanhnn/laravel-echo-server
+        container_name: echo-server
+        environment:
+            REDIS_HOST: ${REDIS_HOST}
+            REDIS_PORT: ${REDIS_PORT}
+            REDIS_PREFIX: ${REDIS_PREFIX}
+            REDIS_PASSWORD: ${REDIS_PASSWORD}
+            REDIS_DB: ${REDIS_DB}
+        volumes:
+            - ./config/echo_server/laravel-echo-server.json:/app/laravel-echo-server.json
+        ports:
+            - 6001:6001
+

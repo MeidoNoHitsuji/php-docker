@@ -25,3 +25,4 @@
 # ide config
 /.vscode
 /.idea
+.env
