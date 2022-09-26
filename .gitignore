@@ -2,6 +2,7 @@
 !/www/example.com/
 !/hosts/example.com.conf
 !/hosts/default.conf
+/host_backup
 
 # other projects
 /www/*
@@ -18,9 +19,12 @@
 /db/data/*
 !/db/mysql/.gitkeep
 /db/mysql/*
+!/db/clickhouse/.gitkeep
+/db/clickhouse/*
 
 # frontend sourses
 /frontend
+/frontends
 
 # ide config
 /.vscode

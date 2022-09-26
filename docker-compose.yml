@@ -9,6 +9,7 @@ services:
             - ./logs:/var/log/nginx
         ports:
             - 80:80
+            - 81:81
             - "443:443"
         restart: always
         depends_on:
@@ -21,6 +22,17 @@ services:
         volumes:
             - ./images/php/php.ini:/usr/local/etc/php/conf.d/php.ini
             - ./images/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./www:/var/www
+            - ~/.local/share/fish:/home/meido/.local/share/fish
+            - ~/.config/fish:/home/meido/.config/fish
+            - ~/.git-credentials:/home/meido/.git-credentials
+    php8:
+        build: ./images/php8
+        restart: always
+        container_name: php8
+        volumes:
+            - ./images/php8/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./images/php8/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
             - ./www:/var/www
             - ~/.local/share/fish:/home/meido/.local/share/fish
             - ~/.config/fish:/home/meido/.config/fish
@@ -38,21 +50,21 @@ services:
     #         - ./db/initdb/:/docker-entrypoint-initdb.d/
     #         - ./db/data/:/var/lib/postgresql/data
     #         - ./logs:/var/log/postgresql/
-    adminer:
-        image: adminer
-        restart: always
-        ports:
-            - 8080:8080
-        depends_on:
-            - mysql
+    # adminer:
+    #     image: adminer
+    #     restart: always
+    #     ports:
+    #         - 8080:8080
+    #     depends_on:
+    #         - mysql
     mysql:
         image: mysql
         command: --default-authentication-plugin=mysql_native_password
         restart: always
         container_name: mysql
         environment:
-            MYSQL_DATABASE: smitup
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         ports:
             - 3306:3306
         volumes:
@@ -66,29 +78,40 @@ services:
         restart: always
         working_dir: /app
         stdin_open: true
+        mem_limit: 2048m
         ports:
             - 3000:3000
         volumes:
-            - ./frontend/:/app/
+            - ./frontends/elya-frontend/:/app/ #zazajobs-admin
         command: sh -c "yarn install && yarn run serve"
-    redis:
-        image: redis
-        container_name: redis
+    clickhouse:
+        image: yandex/clickhouse-server:21.3.20.1
+        container_name: clickhouse
         restart: always
+        mem_limit: 1024m
         ports:
-            - 6379:6379
-        command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
-    echo-server:
-        image: oanhnn/laravel-echo-server
-        container_name: echo-server
-        environment:
-            REDIS_HOST: ${REDIS_HOST}
-            REDIS_PORT: ${REDIS_PORT}
-            REDIS_PREFIX: ${REDIS_PREFIX}
-            REDIS_PASSWORD: ${REDIS_PASSWORD}
-            REDIS_DB: ${REDIS_DB}
+            - 8123:8123
         volumes:
-            - ./config/echo_server/laravel-echo-server.json:/app/laravel-echo-server.json
-        ports:
-            - 6001:6001
-
+            - ./db/clickhouse:/var/lib/clickhouse
+    # redis:
+    #     image: redis
+    #     container_name: redis
+    #     restart: always
+    #     mem_limit: 512m
+    #     ports:
+    #         - 6379:6379
+    #     command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
+    # echo-server:
+    #     image: oanhnn/laravel-echo-server
+    #     container_name: echo-server
+    #     mem_limit: 512m
+    #     environment:
+    #         REDIS_HOST: ${REDIS_HOST}
+    #         REDIS_PORT: ${REDIS_PORT}
+    #         REDIS_PREFIX: ${REDIS_PREFIX}
+    #         REDIS_PASSWORD: ${REDIS_PASSWORD}
+    #         REDIS_DB: ${REDIS_DB}
+    #     volumes:
+    #         - ./config/echo_server/laravel-echo-server.json:/app/laravel-echo-server.json
+    #     ports:
+    #         - 6001:6001
