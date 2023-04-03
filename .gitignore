@@ -25,6 +25,7 @@
 # frontend sourses
 /frontend
 /frontends
+/frontends/*
 
 # ide config
 /.vscode
