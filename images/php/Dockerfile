@@ -9,6 +9,7 @@ RUN apt update && apt install -y \
         zip \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
+        libmagickwand-dev \
         libmcrypt-dev \
         libonig-dev \
         libpng-dev \
@@ -19,11 +20,16 @@ RUN apt update && apt install -y \
         libwebp-dev \
         libvpx-dev \
         libzip-dev \
+        libyaml-dev \
         fish \
-    && pecl install xdebug \
+    && pecl install yaml \
+    && pecl install xdebug-3.0.1 \
     && pecl install mcrypt-1.0.3 \
+    && pecl install imagick \
+    && docker-php-ext-enable yaml\
     && docker-php-ext-enable xdebug \
-    && docker-php-ext-enable mcrypt 
+    && docker-php-ext-enable mcrypt \
+    && docker-php-ext-enable imagick
 
 # Configure and install PHP extentions
 RUN set -eux; \
@@ -34,6 +40,7 @@ RUN set -eux; \
         mbstring \
         gd \
         intl \
+        sockets \
         zip \
         pgsql \
         mysqli \
