@@ -20,6 +20,7 @@ RUN apt update && apt install -y \
         libzip-dev \
         libyaml-dev \
         fish \
+        mariadb-client \
     && pecl install yaml \
     && docker-php-ext-enable yaml\
     && pecl install xdebug \
